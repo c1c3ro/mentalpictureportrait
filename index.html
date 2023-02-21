@@ -11,22 +11,59 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-
+  <script src="script.js"></script>
 </head>
 <body>
 
-  <div class="card-title">
-    <h2> Clique para mostrar a carta: </h2>
-  </div>
-  <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
-    <div class="flipper">
-      <div class="front">
-        <img class="flip-img" src="./img/backcard.png" width="200px" height="auto">
-      </div>
-      <div class="back">
-        <img class="flip-img" src="./img/cards/m10.jpg" width="200px" height="auto">
+<section class="box">
+  <section class="dropdown-s"> 
+    <div class="dropdown">
+      <button onclick="major()" class="dropbtn">Arcanos Maiores</button>
+      <div id="major" class="dropdown-content">
       </div>
     </div>
+    <div class="dropdown">
+      <button onclick="cups()" class="dropbtn">Naipe de Copas</button>
+      <div id="cups" class="dropdown-content">
+      </div>
+    </div>
+    <div class="dropdown">
+      <button onclick="swords()" class="dropbtn">Naipe de Espadas</button>
+      <div id="swords" class="dropdown-content">
+      </div>
+    </div>
+    <div class="dropdown">
+      <button onclick="wands()" class="dropbtn">Naipe de Paus</button>
+      <div id="wands" class="dropdown-content">
+      </div>
+    </div>
+    <div class="dropdown">
+      <button onclick="pentacles()" class="dropbtn">Naipe de Ouros</button>
+      <div id="pentacles" class="dropdown-content">
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="card-title">
+      <h2> Clique para mostrar a carta: </h2>
+    </div>
+    <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+      <div class="flipper">
+        <div class="front">
+          <img class="flip-img" src="./img/backcard.png" width="200px" height="auto">
+        </div>
+        <div class="back">
+          <img id="backside" class="flip-img" src="./img/cards/m10.jpg" width="200px" height="auto">
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+</section>
+
+  <div class="card-content">
+
   </div>
   
 </body>
@@ -35,8 +72,153 @@
   $(document).ready(function(){
 
     $(document).on("click", ".flip-container", function () {
-    $(this).toggleClass('hover');
+      $(this).toggleClass('hover');
     });
+
+    $(document).on("click", ".card", function () {
+      var classList = $(this).attr('class').split(/\s+/);
+      $.each(classList, function(index, item) {
+        if (item != "card"){
+          $("#backside").attr("src", "./img/cards/" + item + ".jpg");
+        }
+      });
+
+      $.getJSON("./descriptions/" + $(this).text() + ".json", function(data){
+        $(".card-content").empty();
+        $.each(data, function(index, element){
+          if (index == "contents"){
+              $.each(element, function(index, element){
+                $(".card-content").append("<h2>" + index + "</h2>");
+                $.each(element, function(index, element){
+                  $(".card-content").append("<p>" + element + "</p>");
+                });
+              });
+            }
+        });
+      }).fail(function(){
+        console.log("An error has occurred.");
+      });
+
+    });
+
+    $.getJSON("descriptions/major.json", function(data){
+      //console.log(data); // Prints: Harry
+      var i = 0;
+      $.each(data, function(index, element){
+        console.log(index);
+        if (i < 10){
+          $("#major").append("<a href='#' class='card m0" + i + "'>" + index + "</a>");
+        } else {
+          $("#major").append("<a href='#' class='card m" + i + "'>" + index + "</a>");
+        }
+        i += 1;
+      });
+    }).fail(function(){
+        console.log("An error has occurred.");
+      });
+
+    $.getJSON("descriptions/cups.json", function(data){
+      //console.log(data); // Prints: Harry
+      var i = 1;
+      $.each(data, function(index, element){
+        console.log(index);
+        if (i < 10){
+          $("#cups").append("<a href='#' class='card c0" + i + "'>" + index + "</a>");
+        } else {
+          $("#cups").append("<a href='#' class='card c" + i + "'>" + index + "</a>");
+        }
+        i += 1;
+      });
+    }).fail(function(){
+        console.log("An error has occurred.");
+      });
+
+    $.getJSON("descriptions/swords.json", function(data){
+      //console.log(data); // Prints: Harry
+      var i = 1;
+      $.each(data, function(index, element){
+        console.log(index);
+        if (i < 10){
+          $("#swords").append("<a href='#' class='card s0" + i + "'>" + index + "</a>");
+        } else {
+          $("#swords").append("<a href='#' class='card s" + i + "'>" + index + "</a>");
+        }
+        i += 1;
+      });
+    }).fail(function(){
+        console.log("An error has occurred.");
+      });
+
+    $.getJSON("descriptions/wands.json", function(data){
+      //console.log(data); // Prints: Harry
+      var i = 1;
+      $.each(data, function(index, element){
+        console.log(index);
+        if (i < 10){
+          $("#wands").append("<a href='#' class='card w0" + i + "'>" + index + "</a>");
+        } else {
+          $("#wands").append("<a href='#' class='card w" + i + "'>" + index + "</a>");
+        }
+        i += 1;
+      });
+    }).fail(function(){
+        console.log("An error has occurred.");
+      });
+
+    $.getJSON("descriptions/pentacles.json", function(data){
+      //console.log(data); // Prints: Harry
+      var i = 1;
+      $.each(data, function(index, element){
+        console.log(index);
+        if (i < 10){
+          $("#pentacles").append("<a href='#' class='card p0" + i + "'>" + index + "</a>");
+        } else {
+          $("#pentacles").append("<a href='#' class='card p" + i + "'>" + index + "</a>");
+        }
+        i += 1;
+      });
+    }).fail(function(){
+        console.log("An error has occurred.");
+      });
+
+    
+    
+    /*
+    $.getJSON("cups.json", function(data){
+      //console.log(data); // Prints: Harry
+      $.each(data, function(index, element){
+        console.log(index)
+
+
+        $.getJSON(index + ".json", function(data){
+          //console.log(data); // Prints: Harry
+          $.each(data, function(index, element){
+            //console.log(index, element)
+            if (index == "contents"){
+              $.each(element, function(index, element){
+                console.log(index, element)
+              });
+            }
+          });
+        }).fail(function(){
+            console.log("An error has occurred.");
+          });
+
+
+      });
+    }).fail(function(){
+        console.log("An error has occurred.");
+      });
+
+    $.getJSON("swords.json", function(data){
+      console.log(data); // Prints: Harry
+      $.each(data, function(index, element){
+        console.log(index)
+      });
+    }).fail(function(){
+        console.log("An error has occurred.");
+      });
+*/
   });
 </script>
 
